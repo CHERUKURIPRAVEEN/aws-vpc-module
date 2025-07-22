@@ -130,7 +130,7 @@ resource "aws_route" "public_route" {
 
 resource "aws_route_table" "private_route_table" {
   for_each = { for subnets in var.private_subnets : subnets.availability_zone => subnets }
-  vpc_id = aws_vpc.vpc.id
+  vpc_id   = aws_vpc.vpc.id
   tags = merge({
     "Name" = "${aws_vpc.vpc.id}-private-route-table"
     }, var.tags

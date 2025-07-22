@@ -6,8 +6,8 @@ variable "region" {
 
 variable "environment" {
   description = "Environment"
-  type = string
-  default = "DEV"
+  type        = string
+  default     = "DEV"
 }
 
 variable "tags" {
@@ -42,7 +42,7 @@ variable "public_subnets" {
     availability_zone = string
     cidr_block        = string
   }))
-  default = [ ]
+  default = []
 }
 
 variable "private_dns_hostname_type_on_launch" {
@@ -63,5 +63,5 @@ variable "private_subnets" {
     availability_zone = string
     cidr_block        = string
   }))
-  default = [ ]
+  default = []
 }
