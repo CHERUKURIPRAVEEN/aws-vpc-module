@@ -21,7 +21,7 @@ variable "vpc_name" {
 variable "cidr_block" {
   description = "CIDR range"
   type        = string
-  default     = "10.1.0.0/16"
+  default     = " "
 }
 
 variable "enable_dns_hostnames" {
@@ -36,10 +36,7 @@ variable "public_subnets" {
     availability_zone = string
     cidr_block        = string
   }))
-  default = [
-    { availability_zone = "us-east-1a", cidr_block = "10.1.1.0/24" },
-    { availability_zone = "us-east-1b", cidr_block = "10.1.2.0/24" }
-  ]
+  default = [ ]
 }
 
 variable "private_dns_hostname_type_on_launch" {
@@ -60,8 +57,5 @@ variable "private_subnets" {
     availability_zone = string
     cidr_block        = string
   }))
-  default = [
-    { availability_zone = "us-east-1a", cidr_block = "10.1.100.0/24" },
-    { availability_zone = "us-east-1b", cidr_block = "10.1.101.0/24" }
-  ]
+  default = [ ]
 }
