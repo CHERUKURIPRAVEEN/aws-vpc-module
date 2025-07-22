@@ -4,6 +4,12 @@ variable "region" {
   default     = "us-east-1"
 }
 
+variable "environment" {
+  description = "Environment"
+  type = string
+  default = "DEV"
+}
+
 variable "tags" {
   description = "default tags"
   type        = map(string)
