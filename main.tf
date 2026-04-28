@@ -66,15 +66,29 @@ resource "aws_internet_gateway" "internet_geteway" {
 ########################################### EIP ##################################################
 ##################################################################################################
 
-resource "aws_eip" "eip" {
-  for_each = { for az in var.public_subnets : az.availability_zone => az }
-  domain   = "vpc"
-  tags = merge({
-    "Name" = "${aws_vpc.vpc.id}-eip-${each.value.availability_zone}"
-    },
-  var.tags)
+# resource "aws_eip" "eip" {
+#   for_each = { for az in var.public_subnets : az.availability_zone => az }
+#   domain   = "vpc"
+#   tags = merge({
+#     "Name" = "${aws_vpc.vpc.id}-eip-${each.value.availability_zone}"
+#     },
+#   var.tags)
 
-  # EIP may require IGW to exist prior to association.
+#   # EIP may require IGW to exist prior to association.
+#   depends_on = [aws_internet_gateway.internet_geteway]
+# }
+
+resource "aws_eip" "eip" {
+  for_each = var.create_nat_gateway ? {
+    for az in var.public_subnets : az.availability_zone => az
+  } : {}
+
+  domain = "vpc"
+
+  tags = merge({
+    Name = "${aws_vpc.vpc.id}-eip-${each.value.availability_zone}"
+  }, var.tags)
+
   depends_on = [aws_internet_gateway.internet_geteway]
 }
 
@@ -82,17 +96,32 @@ resource "aws_eip" "eip" {
 ########################################### NAT Gateway ##########################################
 ##################################################################################################
 
+# resource "aws_nat_gateway" "nat_gateway" {
+#   for_each      = { for az in var.public_subnets : az.availability_zone => az }
+#   subnet_id     = aws_subnet.public[each.value.availability_zone].id
+#   allocation_id = aws_eip.eip[each.value.availability_zone].id
+#   tags = merge({
+#     "Name" = "${aws_vpc.vpc.id}-nat-public-${each.value.availability_zone}"
+#     },
+#   var.tags)
+
+#   # To ensure proper ordering, it is recommended to add an explicit dependency
+#   # on the Internet Gateway for the VPC.
+#   depends_on = [aws_internet_gateway.internet_geteway]
+# }
+
 resource "aws_nat_gateway" "nat_gateway" {
-  for_each      = { for az in var.public_subnets : az.availability_zone => az }
+  for_each = var.create_nat_gateway ? {
+    for az in var.public_subnets : az.availability_zone => az
+  } : {}
+
   subnet_id     = aws_subnet.public[each.value.availability_zone].id
   allocation_id = aws_eip.eip[each.value.availability_zone].id
-  tags = merge({
-    "Name" = "${aws_vpc.vpc.id}-nat-public-${each.value.availability_zone}"
-    },
-  var.tags)
 
-  # To ensure proper ordering, it is recommended to add an explicit dependency
-  # on the Internet Gateway for the VPC.
+  tags = merge({
+    Name = "${aws_vpc.vpc.id}-nat-public-${each.value.availability_zone}"
+  }, var.tags)
+
   depends_on = [aws_internet_gateway.internet_geteway]
 }
 

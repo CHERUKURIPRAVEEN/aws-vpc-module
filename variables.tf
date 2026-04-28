@@ -30,6 +30,12 @@ variable "cidr_block" {
   default     = " "
 }
 
+variable "create_nat_gateway" {
+  description = "Create EIP and NAT Gateway"
+  type        = bool
+  default     = true
+}
+
 variable "enable_dns_hostnames" {
   description = "dns hostname enable"
   type        = bool
