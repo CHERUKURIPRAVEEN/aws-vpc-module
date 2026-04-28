@@ -1,3 +1,5 @@
+.terraform/*
+.terraform.lock.hcl
 /EKS/.terraform/*
 /EKS/.terraform.lock.hcl
 /VPC/.terraform/*

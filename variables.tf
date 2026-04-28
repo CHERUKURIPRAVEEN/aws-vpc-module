@@ -6,8 +6,8 @@ variable "region" {
 
 variable "environment" {
   description = "Environment"
-  type = string
-  default = "DEV"
+  type        = string
+  default     = "DEV"
 }
 
 variable "tags" {
@@ -33,7 +33,12 @@ variable "cidr_block" {
 variable "create_nat_gateway" {
   description = "Create EIP and NAT Gateway"
   type        = bool
-  default     = true
+  default     = false
+}
+
+variable "single_nat_gateway" {
+  type    = bool
+  default = true
 }
 
 variable "enable_dns_hostnames" {
@@ -48,7 +53,7 @@ variable "public_subnets" {
     availability_zone = string
     cidr_block        = string
   }))
-  default = [ ]
+  default = []
 }
 
 variable "private_dns_hostname_type_on_launch" {
@@ -69,5 +74,5 @@ variable "private_subnets" {
     availability_zone = string
     cidr_block        = string
   }))
-  default = [ ]
+  default = []
 }
