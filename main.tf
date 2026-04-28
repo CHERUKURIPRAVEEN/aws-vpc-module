@@ -1,3 +1,8 @@
+/*
+* AWS VPC Module
+* Managed by Praveen Cherukuri
+*/
+
 ##################################################################################################
 #####################################   VPC   ####################################################
 ##################################################################################################
@@ -7,7 +12,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   tags = merge(
     {
-      "Name" = var.vpc_name
+      "Name" = upper(var.vpc_name)
       "EKS"  = "YES"
     }, var.tags
   )
@@ -25,7 +30,7 @@ resource "aws_subnet" "public" {
   private_dns_hostname_type_on_launch = var.private_dns_hostname_type_on_launch
   map_public_ip_on_launch             = var.map_public_ip_on_launch
   tags = merge({
-    "Name"   = "${aws_vpc.vpc.id}-subnet-public-${each.value.availability_zone}"
+    "Name"   = "upper(${aws_vpc.vpc.id}-subnet-public-${each.value.availability_zone})"
     "Public" = "YES"
     "EKS"    = "YES"
     }, var.tags
@@ -43,7 +48,7 @@ resource "aws_subnet" "private" {
   availability_zone                   = each.value.availability_zone
   private_dns_hostname_type_on_launch = var.private_dns_hostname_type_on_launch
   tags = merge({
-    "Name"   = "${aws_vpc.vpc.id}-subnet-private-${each.value.availability_zone}"
+    "Name"   = "upper(${aws_vpc.vpc.id}-subnet-private-${each.value.availability_zone})"
     "Public" = "NO"
     "EKS"    = "YES"
     }, var.tags
@@ -57,7 +62,7 @@ resource "aws_subnet" "private" {
 resource "aws_internet_gateway" "internet_geteway" {
   vpc_id = aws_vpc.vpc.id
   tags = merge({
-    "Name" = "${aws_vpc.vpc.id}-igw"
+    "Name" = "upper(${aws_vpc.vpc.id}-igw)"
     }, var.tags
   )
 }
@@ -70,7 +75,7 @@ resource "aws_internet_gateway" "internet_geteway" {
 #   for_each = { for az in var.public_subnets : az.availability_zone => az }
 #   domain   = "vpc"
 #   tags = merge({
-#     "Name" = "${aws_vpc.vpc.id}-eip-${each.value.availability_zone}"
+#     "Name" = "upper(${aws_vpc.vpc.id}-eip-${each.value.availability_zone})"
 #     },
 #   var.tags)
 
@@ -86,7 +91,7 @@ resource "aws_internet_gateway" "internet_geteway" {
 #   domain = "vpc"
 
 #   tags = merge({
-#     Name = "${aws_vpc.vpc.id}-eip-${each.value.availability_zone}"
+#     Name = "upper(${aws_vpc.vpc.id}-eip-${each.value.availability_zone})"
 #   }, var.tags)
 
 #   depends_on = [aws_internet_gateway.internet_geteway]
@@ -98,7 +103,7 @@ resource "aws_eip" "eip" {
   domain = "vpc"
 
   tags = merge({
-    Name = "${aws_vpc.vpc.id}-eip-${each.key}"
+    Name = "upper(${aws_vpc.vpc.id}-eip-${each.key})"
   }, var.tags)
 
   depends_on = [aws_internet_gateway.internet_geteway]
@@ -112,7 +117,7 @@ resource "aws_eip" "eip" {
 #   subnet_id     = aws_subnet.public[each.value.availability_zone].id
 #   allocation_id = aws_eip.eip[each.value.availability_zone].id
 #   tags = merge({
-#     "Name" = "${aws_vpc.vpc.id}-nat-public-${each.value.availability_zone}"
+#     "Name" = "upper(${aws_vpc.vpc.id}-nat-public-${each.value.availability_zone})"
 #     },
 #   var.tags)
 
@@ -130,7 +135,7 @@ resource "aws_eip" "eip" {
 #   allocation_id = aws_eip.eip[each.value.availability_zone].id
 
 #   tags = merge({
-#     Name = "${aws_vpc.vpc.id}-nat-public-${each.value.availability_zone}"
+#     Name = "upper(${aws_vpc.vpc.id}-nat-public-${each.value.availability_zone})"
 #   }, var.tags)
 
 #   depends_on = [aws_internet_gateway.internet_geteway]
@@ -151,7 +156,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.eip[each.key].id
 
   tags = merge({
-    Name = "${aws_vpc.vpc.id}-nat-${each.key}"
+    Name = "upper(${aws_vpc.vpc.id}-nat-${each.key})"
   }, var.tags)
 
   depends_on = [aws_internet_gateway.internet_geteway]
@@ -164,7 +169,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.vpc.id
   tags = merge({
-    "Name" = "${aws_vpc.vpc.id}-public-route-table"
+    "Name" = "upper(${aws_vpc.vpc.id}-public-route-table)"
     }, var.tags
   )
 }
@@ -193,7 +198,7 @@ resource "aws_route" "public_route" {
 #   for_each = { for subnets in var.private_subnets : subnets.availability_zone => subnets }
 #   vpc_id = aws_vpc.vpc.id
 #   tags = merge({
-#     "Name" = "${aws_vpc.vpc.id}-private-route-table"
+#     "Name" = "upper(${aws_vpc.vpc.id}-private-route-table)"
 #     }, var.tags
 #   )
 # }
@@ -204,7 +209,7 @@ resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.vpc.id
 
   tags = merge({
-    Name = "${aws_vpc.vpc.id}-private-rt-${each.key}"
+    Name = "upper(${aws_vpc.vpc.id}-private-rt-${each.key})"
   }, var.tags)
 }
 

@@ -7,14 +7,14 @@ variable "region" {
 variable "environment" {
   description = "Environment"
   type        = string
-  default     = "DEV"
+  default     = "Dev"
 }
 
 variable "tags" {
   description = "default tags"
   type        = map(string)
   default = {
-    "env" = "DEV"
+    "env" = "Dev"
   }
 }
 
