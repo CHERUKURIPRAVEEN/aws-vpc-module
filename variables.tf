@@ -41,8 +41,8 @@ variable "environment_code" {
   default     = "A1"
 
   validation {
-    condition     = length(var.environment_code) > 2
-    error_message = "Environment code should be 'A1','S1','S2','SX','P1','P2','PX','PR','PD'"
+    condition     = length(var.environment_code) == 2
+    error_message = "Environment code like 'A1','S1','S2','SX','P1','P2','PX','PR','PD'"
   }
 }
 
