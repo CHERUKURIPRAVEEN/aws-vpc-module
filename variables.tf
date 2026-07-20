@@ -9,8 +9,8 @@ variable "application" {
   type        = string
 
   validation {
-    condition     = length(var.application) > 7
-    error_message = "application value should be minimum of 8 characters"
+    condition     = length(var.application) <= 7
+    error_message = "application value should be maximum of 7 characters"
   }
 }
 
@@ -19,8 +19,8 @@ variable "application_code" {
   type        = string
 
   validation {
-    condition     = length(var.application_code) > 3
-    error_message = "application code should be minimum of 4 characters"
+    condition     = length(var.application_code) <= 3
+    error_message = "application code should be maximum of 3 characters"
   }
 }
 
@@ -60,8 +60,8 @@ variable "vpc_name" {
   default     = "VPC_BY_TF"
 
   validation {
-    condition     = length(var.vpc_name) > 9
-    error_message = "vpc name should be minimum of 10 characters"
+    condition     = length(var.vpc_name) <= 10
+    error_message = "VPC name must not exceed 10 characters."
   }
 
   validation {
