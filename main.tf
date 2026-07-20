@@ -12,7 +12,10 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   tags = merge(
     {
-      "Name" = upper("${var.vpc_name}")
+      "Name"           = upper("${var.vpc_name}"),
+      application_code = var.application_code,
+      environment_code = var.environment_code,
+      environment      = var.environment
     }, var.tags
   )
 }
@@ -29,7 +32,7 @@ resource "aws_subnet" "public" {
   private_dns_hostname_type_on_launch = var.private_dns_hostname_type_on_launch
   map_public_ip_on_launch             = var.map_public_ip_on_launch
   tags = merge({
-    "Name"   = upper("${aws_vpc.vpc.id}-subnet-public-${each.value.availability_zone}")
+    "Name" = upper("${aws_vpc.vpc.id}-subnet-public-${each.value.availability_zone}")
     }, var.tags
   )
 }
@@ -45,7 +48,7 @@ resource "aws_subnet" "private" {
   availability_zone                   = each.value.availability_zone
   private_dns_hostname_type_on_launch = var.private_dns_hostname_type_on_launch
   tags = merge({
-    "Name"   = upper("${aws_vpc.vpc.id}-subnet-private-${each.value.availability_zone}")
+    "Name" = upper("${aws_vpc.vpc.id}-subnet-private-${each.value.availability_zone}")
     }, var.tags
   )
 }

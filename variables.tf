@@ -4,17 +4,53 @@ variable "region" {
   default     = "us-east-1"
 }
 
+variable "application" {
+  description = "Application tag value for the EC2 instance. Minimum of 8 characters."
+  type        = string
+
+  validation {
+    condition     = length(var.application) > 7
+    error_message = "application value should be minimum of 8 characters"
+  }
+}
+
+variable "application_code" {
+  description = "Application code for the EC2 instance. Minimum of 8 characters."
+  type        = string
+
+  validation {
+    condition     = length(var.application_code) > 3
+    error_message = "application code should be minimum of 4 characters"
+  }
+}
+
 variable "environment" {
-  description = "Environment"
+  description = "Environment of the EC2 instance. Possible values: 'Dev','Qa','Stage','PreProd','Production'"
   type        = string
   default     = "Dev"
+
+  validation {
+    condition     = contains(["Dev", "Qa", "Stage", "PreProd", "Production"], var.environment)
+    error_message = "Environment should be 'Dev','Qa','Stage','PreProd','Production'"
+  }
+}
+
+variable "environment_code" {
+  description = "Environment code for the EC2 instance. Possible values: 'Dev','Qa','Stage','PreProd','Production'"
+  type        = string
+  default     = "A1"
+
+  validation {
+    condition     = length(var.environment_code) > 2
+    error_message = "Environment code should be 'A1','S1','S2','SX','P1','P2','PX','PR','PD'"
+  }
 }
 
 variable "tags" {
   description = "default tags"
   type        = map(string)
   default = {
-    "env" = "Dev"
+    "env" = "NP"
   }
 }
 
