@@ -58,6 +58,16 @@ variable "vpc_name" {
   description = "vpc name"
   type        = string
   default     = "VPC_BY_TF"
+
+  validation {
+    condition     = length(var.vpc_name) > 9
+    error_message = "vpc name should be minimum of 10 characters"
+  }
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_-]+$", var.vpc_name))
+    error_message = "VPC name should contain only alphanumeric characters, hyphens, and underscores."
+  }
 }
 
 variable "cidr_block" {
