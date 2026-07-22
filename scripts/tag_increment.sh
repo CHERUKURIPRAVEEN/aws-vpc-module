@@ -31,6 +31,11 @@ echo "Creating tag: $NEW_TAG"
 
 git tag "$NEW_TAG"
 
+git remote set-url origin \
+  https://x-access-token:${PAT_TOKEN}@github.com/CHERUKURIPRAVEEN/aws-vpc-module.git
+
+git push origin "$NEW_TAG"
+
 echo "Pushing tag to $REMOTE..."
 
 git push "$REMOTE" "$NEW_TAG"
