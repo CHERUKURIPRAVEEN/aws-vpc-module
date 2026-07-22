@@ -12,10 +12,11 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   tags = merge(
     {
-      "Name"           = upper("${var.vpc_name}"),
+      "Name"           = upper(var.vpc_name),
       application_code = var.application_code,
       environment_code = var.environment_code,
-      environment      = var.environment
+      environment      = var.environment,
+      application      = var.application
     }, var.tags
   )
 }

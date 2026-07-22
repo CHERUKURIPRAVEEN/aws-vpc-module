@@ -48,7 +48,7 @@ jobs:
         run: |
           terraform init \
           -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
-          -backend-config="key=modules/vpc/${GITHUB_RUN_ID}.tfstate" \
+          -backend-config="key=modules/vpc/mod_vpc.tfstate" \
           -backend-config="region=us-east-1" \
           -backend-config="dynamodb_table=${{ secrets.TF_LOCKS_TABLE }}"
 
