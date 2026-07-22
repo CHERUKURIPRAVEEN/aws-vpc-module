@@ -135,8 +135,8 @@ jobs:
       - name: Create Release
         id: version
         run: |
-          chmod +x scripts/calculate-version.sh
-          ./scripts/calculate-version.sh
+          chmod +x scripts/tag_increment.sh
+          ./scripts/tag_increment.sh
 
   cleanup:
     runs-on: ubuntu-latest
