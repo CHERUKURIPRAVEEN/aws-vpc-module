@@ -1,0 +1,28 @@
+name: Terraform Setup
+description: Install Terraform, AWS CLI, TFLint and Checkov
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install AWS cli
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y unzip curl
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install --update
+        aws --version
+        mkdir -p ~/.aws
+        cat > ~/.aws/credentials <<EOF
+        [default]
+        aws_access_key_id=${AWS_ACCESS_KEY_ID}
+        aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
+        EOF
+        cat > ~/.aws/config <<EOF
+        [default]
+        region=us-east-1
+        output=json
+        EOF
+      

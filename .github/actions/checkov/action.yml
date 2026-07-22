@@ -1,0 +1,20 @@
+name: Terraform Setup
+description: Install Terraform, AWS CLI, TFLint and Checkov
+
+runs:
+  using: composite
+
+  steps:    
+    - name: Install Checkov Dependencies
+      shell: bash
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          python3 \
+          python3-pip \
+          python3-venv \
+          python3-full
+        python3 -m venv $HOME/.checkov-env
+        $HOME/.checkov-env/bin/python -m pip install --upgrade pip
+        $HOME/.checkov-env/bin/pip install checkov
+        $HOME/.checkov-env/bin/checkov --version

@@ -1,0 +1,16 @@
+name: Terraform Setup
+description: Install Terraform, AWS CLI, TFLint and Checkov
+
+runs:
+  using: composite
+
+  steps:
+    - name: Setup TFLint
+      shell: bash
+      run: |
+        TFLINT_VERSION=0.55.1
+        echo "Installing TFLint ${TFLINT_VERSION}"
+        wget -q https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip
+        unzip -o tflint_linux_amd64.zip
+        sudo mv tflint /usr/local/bin/
+        tflint --version

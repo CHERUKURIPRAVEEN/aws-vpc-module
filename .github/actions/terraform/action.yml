@@ -1,0 +1,16 @@
+name: Terraform Setup
+description: Install Terraform, AWS CLI, TFLint and Checkov
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install Terraform
+      shell: bash
+      run: |
+        TF_VERSION=${{ env.TF_VERSION }}
+        echo "Installing Terraform ${TF_VERSION}"
+        wget -q https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+        unzip -o terraform_${TF_VERSION}_linux_amd64.zip
+        sudo mv terraform /usr/local/bin/
+        terraform version
