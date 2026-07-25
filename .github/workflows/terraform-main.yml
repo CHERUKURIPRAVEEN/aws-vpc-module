@@ -91,6 +91,14 @@ jobs:
       - name: Setup Terraform
         uses: ./.github/actions/terraform
 
+      - name: Terraform backend init
+        run: |
+          terraform init \
+          -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+          -backend-config="key=modules/vpc/mod_vpc.tfstate" \
+          -backend-config="region=us-east-1" \
+          -backend-config="dynamodb_table=${{ secrets.TF_LOCKS_TABLE }}"
+
       - name: Terraform Initialize
         run: terraform init
 
@@ -116,6 +124,14 @@ jobs:
 
       - name: Setup Terraform
         uses: ./.github/actions/terraform
+
+      - name: Terraform backend init
+        run: |
+          terraform init \
+          -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+          -backend-config="key=modules/vpc/mod_vpc.tfstate" \
+          -backend-config="region=us-east-1" \
+          -backend-config="dynamodb_table=${{ secrets.TF_LOCKS_TABLE }}"
       
       - name: Terraform Initialize
         run: terraform init
@@ -151,6 +167,14 @@ jobs:
       - name: Setup Terraform
         uses: ./.github/actions/terraform
       
+      - name: Terraform backend init
+        run: |
+          terraform init \
+          -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+          -backend-config="key=modules/vpc/mod_vpc.tfstate" \
+          -backend-config="region=us-east-1" \
+          -backend-config="dynamodb_table=${{ secrets.TF_LOCKS_TABLE }}"
+
       - name: Terraform Initialize
         run: terraform init
 
